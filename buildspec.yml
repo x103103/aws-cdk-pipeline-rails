@@ -7,7 +7,7 @@ phases:
     commands:
   pre_build:
     commands:
-      - echo Nothing to do in the pre_build phase...
+      - echo $RUBY_27_VERSION
       - echo "installing bundler"
       - gem install bundler
       - echo "installing gems"
