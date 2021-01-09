@@ -1,0 +1,30 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      ruby: 2.7
+    commands:
+      - echo "installing bundler"
+      - gem install bundler
+      - echo "installing bundler"
+      - bundle install --with test
+      - gem install rspec_junit_formatter
+  pre_build:
+    commands:
+      - echo Nothing to do in the pre_build phase...
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Running rspec tests...
+      - bundle exec rspec spec/ --format RspecJunitFormatter --out spec/reports/report.xml
+  post_build:
+    commands:
+      - echo Build completed on `date`
+
+reports:
+  rspec_reports:
+    files:
+      - report.xml
+    base-directory: spec/reports
+    file-format: JUNITXML
