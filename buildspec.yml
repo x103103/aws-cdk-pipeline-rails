@@ -5,14 +5,14 @@ phases:
     runtime-versions:
       ruby: 2.7
     commands:
-      - echo "installing bundler"
-      - gem install bundler
-      - echo "installing bundler"
-      - bundle install --with test
-      - gem install rspec_junit_formatter
   pre_build:
     commands:
       - echo Nothing to do in the pre_build phase...
+      - echo "installing bundler"
+      - gem install bundler
+      - echo "installing gems"
+      - bundle install --with test
+      - gem install rspec_junit_formatter
   build:
     commands:
       - echo Build started on `date`
