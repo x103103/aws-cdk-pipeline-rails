@@ -25,6 +25,3 @@ reports:
       - report.xml
     base-directory: spec/reports
     file-format: JUNITXML
-
-cache:
-
