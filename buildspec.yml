@@ -12,7 +12,8 @@ phases:
 #      - eval "$(rbenv init -)"
       - gem environment
       - gem install bundler --no-document
-      - bundle install --with test -j 8
+      - bundle config set --local with 'test'
+      - bundle install -j 8
       - bundle info rspec
 #  pre_build:
 #    commands:
