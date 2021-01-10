@@ -13,7 +13,7 @@ phases:
     commands:
   build:
     commands:
-      - bundle exec rspec spec/ --format RspecJunitFormatter --out tmp/report.xml
+      - bundle exec rspec spec/ --format RspecJunitFormatter --out spec/report.xml
   post_build:
     commands:
       - echo Build completed on `date`
@@ -22,7 +22,7 @@ reports:
   rspec_reports:
     files:
       - report.xml
-    base-directory: spec/reports
+    base-directory: spec
     file-format: JUNITXML
 
 cache:
