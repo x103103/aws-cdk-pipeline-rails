@@ -5,19 +5,14 @@ phases:
     runtime-versions:
       ruby: 2.7
     commands:
+      - echo $RUBY_27_VERSION
+      - gem install bundler
+      - bundle install --with test -j 8
+      - gem install rspec_junit_formatter
   pre_build:
     commands:
-      - echo "Ruby version:"
-      - echo $RUBY_27_VERSION
-      - echo "installing bundler"
-      - gem install bundler
-      - echo "installing gems"
-      - bundle install --with test
-      - gem install rspec_junit_formatter
   build:
     commands:
-      - echo Build started on `date`
-      - echo Running rspec tests...
       - bundle exec rspec spec/ --format RspecJunitFormatter --out spec/reports/report.xml
   post_build:
     commands:
