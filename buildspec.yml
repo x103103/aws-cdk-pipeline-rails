@@ -29,3 +29,4 @@ cache:
   paths:
     - '/root/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/**/*'
     - '/root/.gem/ruby/2.7.0/**/*'
+    - '/root/.rbenv/versions/2.7.1/bin/**/*'
