@@ -31,7 +31,7 @@ reports:
     base-directory: spec
     file-format: JUNITXML
 
-cache:
-  paths:
-    - '/root/.rbenv/versions/2.7.2/lib/ruby/gems/2.7.0/**/*'
-    - '/root/.rbenv/versions/2.7.2/bin/**/*'
+#cache:
+#  paths:
+#    - '/root/.rbenv/versions/2.7.2/lib/ruby/gems/2.7.0/**/*'
+#    - '/root/.rbenv/versions/2.7.2/bin/**/*'
