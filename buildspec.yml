@@ -6,15 +6,10 @@ phases:
       ruby: 2.7
     commands:
       - echo $RUBY_27_VERSION
-#      - echo $GEM_HOME
-#      - rbenv global $RUBY_27_VERSION && rbenv rehash
-#      - export PATH="$HOME/.rbenv/bin:$PATH"
-#      - eval "$(rbenv init -)"
       - gem environment
       - gem install bundler --no-document
       - bundle config set --local with 'test'
       - bundle install -j 8
-      - bundle info rspec
 #  pre_build:
 #    commands:
 #      - bundle info rspec
@@ -34,4 +29,4 @@ reports:
 
 cache:
   paths:
-    - '/root/.rbenv/versions/2.7.2/lib/ruby/gems/2.7.0/**/*'
+    - '/root/.rbenv/**/*'
