@@ -12,6 +12,7 @@ phases:
       - bundle info rspec
   pre_build:
     commands:
+      - bundle info rspec
   build:
     commands:
       - bundle exec rspec spec --format RspecJunitFormatter --out spec/report.xml
