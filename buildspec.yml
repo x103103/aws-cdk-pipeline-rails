@@ -9,6 +9,7 @@ phases:
       - gem install bundler
       - bundle install --with test -j 8
       - gem install rspec_junit_formatter
+      - gem environment
   pre_build:
     commands:
   build:
@@ -24,3 +25,6 @@ reports:
       - report.xml
     base-directory: spec/reports
     file-format: JUNITXML
+
+cache:
+
