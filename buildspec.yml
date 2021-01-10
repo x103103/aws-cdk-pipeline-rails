@@ -7,9 +7,8 @@ phases:
     commands:
       - echo $RUBY_27_VERSION
       - gem environment
-      - gem install bundler
+      - gem install bundler --no-document
       - bundle install --with test -j 8
-      - gem install rspec_junit_formatter
   pre_build:
     commands:
   build:
@@ -25,3 +24,7 @@ reports:
       - report.xml
     base-directory: spec/reports
     file-format: JUNITXML
+
+cache:
+  paths:
+    - '/root/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0'
