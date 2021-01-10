@@ -6,7 +6,10 @@ phases:
       ruby: 2.7
     commands:
       - echo $RUBY_27_VERSION
-      - rbenv rehash
+      - echo $GEM_HOME
+      - rbenv global $RUBY_27_VERSION && rbenv rehash
+      - export PATH="$HOME/.rbenv/bin:$PATH"
+      - eval "$(rbenv init -)"
       - gem environment
       - gem install bundler --no-document
       - bundle install --with test -j 8
