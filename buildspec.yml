@@ -9,11 +9,12 @@ phases:
       - gem environment
       - gem install bundler --no-document
       - bundle install --with test -j 8
+      - bundle info rspec
   pre_build:
     commands:
   build:
     commands:
-      - rspec spec --format RspecJunitFormatter --out spec/report.xml
+      - bundle exec rspec spec --format RspecJunitFormatter --out spec/report.xml
   post_build:
     commands:
       - echo Build completed on `date`
@@ -28,5 +29,4 @@ reports:
 cache:
   paths:
     - '/root/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/**/*'
-    - '/root/.gem/ruby/2.7.0/**/*'
     - '/root/.rbenv/versions/2.7.1/bin/**/*'
