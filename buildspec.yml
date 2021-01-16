@@ -6,18 +6,20 @@ phases:
       ruby: 2.7
     commands:
       - echo $RUBY_27_VERSION
-  pre_build:
-    commands:
       - gem environment
+      - cp -r /root/cache/* /root/.rbenv/versions/2.7.2/lib/ruby/gems/2.7.0
       - gem install bundler --no-document
       - bundle config set --local with 'test'
       - bundle install -j 8
+#  pre_build:
+#    commands:
   build:
     commands:
       - bundle exec rspec spec --format RspecJunitFormatter --out spec/report.xml
-#  post_build:
-#    commands:
-#      - echo Build completed on `date`
+  post_build:
+    commands:
+      - rm -r /root/cache/*
+      - cp -r /root/.rbenv/versions/2.7.2/lib/ruby/gems/2.7.0/* /root/cache
 
 reports:
   rspec_reports:
@@ -28,4 +30,4 @@ reports:
 
 cache:
   paths:
-    - '/root/.rbenv/versions/2.7.2/lib/ruby/gems/2.7.0/**/*'
+    - '/root/cache'
