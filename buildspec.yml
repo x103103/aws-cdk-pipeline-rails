@@ -31,4 +31,4 @@ reports:
 
 cache:
   paths:
-    - '/root/cache'
+    - '/root/cache/**/*'
