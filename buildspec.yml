@@ -31,4 +31,4 @@ reports:
 
 cache:
   paths:
-    - '/root/cache/**/*'
+    - '/root/.rbenv/versions/2.7.2/lib/ruby/gems/2.7.0'
