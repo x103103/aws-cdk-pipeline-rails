@@ -8,7 +8,8 @@ phases:
       - echo $RUBY_27_VERSION
       - gem environment
       - mkdir -p /root/cache
-      - cp -r /root/cache/* /root/.rbenv/versions/2.7.2/lib/ruby/gems/2.7.0
+      - ls -l /root/cache
+      - cp -r /root/cache /root/.rbenv/versions/2.7.2/lib/ruby/gems/2.7.0
       - gem install bundler --no-document
       - bundle config set --local with 'test'
       - bundle install -j 8
