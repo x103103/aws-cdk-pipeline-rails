@@ -10,9 +10,8 @@ phases:
       - gem install bundler --no-document
       - bundle config set --local with 'test'
       - bundle install -j 8
-  pre_build:
-    commands:
-      - gem install rspec
+#  pre_build:
+#    commands:
   build:
     commands:
       - RAILS_ENV=test rspec spec --format RspecJunitFormatter --out spec/report.xml
@@ -26,6 +25,6 @@ reports:
     base-directory: spec
     file-format: JUNITXML
 
-cache:
-  paths:
-    - '/root/.rbenv/versions/2.7.2/lib/ruby/gems/2.7.0/**/*'
+#cache:
+#  paths:
+#    - '/root/.rbenv/versions/2.7.2/lib/ruby/gems/2.7.0/**/*'
