@@ -16,7 +16,7 @@ phases:
       - gem install rspec_junit_formatter
   build:
     commands:
-      - rspec/* spec --format RspecJunitFormatter --out spec/report.xml
+      - RAILS_ENV=test rspec /* spec --format RspecJunitFormatter --out spec/report.xml
 #  post_build:
 #    commands:
 
