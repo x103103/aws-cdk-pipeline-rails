@@ -14,6 +14,7 @@ phases:
       - bundle install -j 8
       - gem install rspec
       - gem install rspec_junit_formatter
+      - which rspec
   build:
     commands:
       - RAILS_ENV=test rspec spec/* spec --format RspecJunitFormatter --out spec/report.xml
@@ -27,6 +28,6 @@ reports:
     base-directory: spec
     file-format: JUNITXML
 
-#cache:
-#  paths:
-#    - '/root/.rbenv/versions/2.7.2/lib/ruby/gems/2.7.0/**/*'
+cache:
+  paths:
+    - '/root/.rbenv/versions/2.7.2/lib/ruby/gems/2.7.0/**/*'
