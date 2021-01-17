@@ -17,7 +17,6 @@ phases:
       - bundle install -j 8
       - gem install rspec
       - gem install rspec_junit_formatter
-      - which rspec
       - ls -l /root/.rbenv/versions/2.7.2/bin
   build:
     commands:
