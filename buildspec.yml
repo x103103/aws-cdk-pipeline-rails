@@ -10,8 +10,9 @@ phases:
       - gem install bundler --no-document
       - bundle config set --local with 'test'
       - bundle install -j 8
-#  pre_build:
-#    commands:
+  pre_build:
+    commands:
+      - gem install rspec
   build:
     commands:
       - RAILS_ENV=test rspec spec --format RspecJunitFormatter --out spec/report.xml
