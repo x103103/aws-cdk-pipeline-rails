@@ -9,19 +9,15 @@ phases:
       ruby: 2.7
     commands:
       - echo $RUBY_27_VERSION
-      - gem environment
+      - eval "$(rbenv init -)"
       - gem install bundler --no-document
       - bundle config set --local with 'test'
-      - bundle install -j 8
-      - eval "$(rbenv init -)"
-      - ls -l /root/.rbenv/versions/2.7.2/bin
-      - echo $PATH
-      - which rspec
+      - bundle install -j $(cat /proc/cpuinfo | grep processor | wc -l)
   pre_build:
     commands:
   build:
     commands:
-      - rspec spec/* spec --format RspecJunitFormatter --out spec/report.xml
+      - rspec spec/* --format RspecJunitFormatter --out spec/report.xml
 #  post_build:
 #    commands:
 
@@ -35,4 +31,3 @@ reports:
 cache:
   paths:
     - '/root/.rbenv/versions/2.7.2/lib/ruby/gems/2.7.0/**/*'
-    - '/root/.rbenv/versions/2.7.2/bin/**/*'
