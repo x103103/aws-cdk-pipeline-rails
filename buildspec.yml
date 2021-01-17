@@ -18,9 +18,10 @@ phases:
       - gem install rspec
       - gem install rspec_junit_formatter
       - which rspec
+      - ls -l /root/.rbenv/versions/2.7.2/bin
   build:
     commands:
-      - RAILS_ENV=test rspec spec/* spec --format RspecJunitFormatter --out spec/report.xml
+      - /root/.rbenv/versions/2.7.2/bin/rspec spec/* spec --format RspecJunitFormatter --out spec/report.xml
 #  post_build:
 #    commands:
 
