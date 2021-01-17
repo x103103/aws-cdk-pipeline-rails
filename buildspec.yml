@@ -7,14 +7,16 @@ phases:
     commands:
       - echo $RUBY_27_VERSION
       - gem environment
+  pre_build:
+    commands:
       - gem install bundler --no-document
       - bundle config set --local with 'test'
       - bundle install -j 8
-#  pre_build:
-#    commands:
+      - gem install rspec
+      - gem install rspec_junit_formatter
   build:
     commands:
-      - RAILS_ENV=test rspec spec --format RspecJunitFormatter --out spec/report.xml
+      - rspec/* spec --format RspecJunitFormatter --out spec/report.xml
 #  post_build:
 #    commands:
 
