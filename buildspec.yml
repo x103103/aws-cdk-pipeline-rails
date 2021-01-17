@@ -13,8 +13,7 @@ phases:
       - gem install bundler --no-document
       - bundle config set --local with 'test'
       - bundle install -j 8
-      - rbenv init
-      - exec bash
+      - eval "$(rbenv init -)"
       - ls -l /root/.rbenv/versions/2.7.2/bin
       - echo $PATH
       - which rspec
