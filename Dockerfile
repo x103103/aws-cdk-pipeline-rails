@@ -24,4 +24,7 @@ RUN yarn
 
 COPY . $APP_PATH/
 
+RUN rake assets:precompile RAILS_ENV=production
+RUN rm -rf node_modules
+
 CMD ["bundle", "exec", "rails", "server", "-p", "3000", "-b", "0.0.0.0"]

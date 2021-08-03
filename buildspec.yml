@@ -3,8 +3,8 @@ version: 0.2
 batch:
   fast-fail: false
   build-graph:
-    - identifier: rspec
-      buildspec: buildspec_test.yml
+    - identifier: docker_build
+      buildspec: buildspec_docker.yml
 #    - identifier: docker_build
 #      buildspec: build2.yml
 #      env:
