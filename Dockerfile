@@ -3,6 +3,7 @@ FROM ruby:2.7.2-alpine
 ARG SECRET_KEY_BASE
 ENV SECRET_KEY_BASE ${SECRET_KEY_BASE}
 
+RUN echo $SECRET_KEY_BASE
 RUN echo "install: --no-document" >> /etc/gemrc
 
 # Minimal requirements to run a Rails app

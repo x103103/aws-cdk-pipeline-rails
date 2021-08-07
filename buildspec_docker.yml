@@ -9,6 +9,7 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
+      - echo $SECRET_KEY_BASE
       - docker build -t test/rails-1:latest . --build-arg SECRET_KEY_BASE=$SECRET_KEY_BASE
       - docker tag test/rails-1:latest public.ecr.aws/u7h4b1t2/test/rails-1:latest
   post_build:

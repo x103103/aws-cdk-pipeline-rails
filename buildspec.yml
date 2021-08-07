@@ -5,6 +5,7 @@ batch:
   build-graph:
     - identifier: docker_build
       buildspec: buildspec_docker.yml
+      privileged-mode: true
 #    - identifier: docker_build
 #      buildspec: build2.yml
 #      env:
