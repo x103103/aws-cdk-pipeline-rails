@@ -1,0 +1,16 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - echo RSpec started on `date`
+      - mkdir -p tmp/reports
+      - chmod 777 tmp/reports
+      - docker-compose run app
+
+reports:
+  rspec_reports:
+    files:
+      - rspec.xml
+    base-directory: tmp/reports
+    file-format: JUNITXML

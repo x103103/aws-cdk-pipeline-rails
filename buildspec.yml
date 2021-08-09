@@ -3,13 +3,11 @@ version: 0.2
 batch:
   fast-fail: false
   build-graph:
-    - identifier: docker_build
-      buildspec: buildspec_docker.yml
+    - identifier: rspec
+      buildspec: buildspec_rspec.yml
       privileged-mode: true
-#    - identifier: docker_build
-#      buildspec: build2.yml
-#      env:
-#        variables:
-#          BUILD_ID: build2
-#      depend-on:
-#        - rspec
+    - identifier: production_image
+      buildspec: buildspec_production_image.yml
+      privileged-mode: true
+      depend-on:
+        - rspec

@@ -1,8 +1,9 @@
 default: &default
   adapter: postgresql
-  host: host.docker.internal
+  host: <%= ENV["DB_HOST"] || 'localhost' %>
   port: 5432
   user: postgres
+  <%= ENV["DB_PASSWORD"] && "password: #{ENV["DB_PASSWORD"]}" %>
   encoding: unicode
   pool: <%= ENV["DB_POOL"] || ENV['RAILS_MAX_THREADS'] || 5 %>
 
@@ -15,5 +16,6 @@ test:
   database: rails_1_test
 
 production:
+  adapter: postgresql
   url: <%= ENV["DATABASE_URL"] %>
   pool: <%= ENV["DB_POOL"] || ENV['MAX_THREADS'] || 5 %>

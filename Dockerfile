@@ -1,34 +1,63 @@
-FROM ruby:2.7.2-alpine
+# Any args used for build stages must be defined here
+ARG BUILD_ENV=production
+ARG RUBY_VERSION=2.7.2
+#ARG SECRET_KEY_BASE=d234324324
+#ENV SECRET_KEY_BASE ${SECRET_KEY_BASE}
 
-ARG SECRET_KEY_BASE
-ENV SECRET_KEY_BASE ${SECRET_KEY_BASE}
+# Base image to use for bundler
+FROM ruby:${RUBY_VERSION} AS base
+RUN apt-get update
 
-RUN echo $SECRET_KEY_BASE
-RUN echo "install: --no-document" >> /etc/gemrc
+# Use slim version of base image to keep size down
+FROM ruby:${RUBY_VERSION}-slim AS app-base
+RUN apt-get update
 
-# Minimal requirements to run a Rails app
-RUN apk add --no-cache --update build-base \
-                                linux-headers \
-                                git \
-                                postgresql-dev \
-                                nodejs \
-                                yarn \
-                                tzdata
-RUN yarn --version
-RUN gem install bundler -v 2.2.4
+FROM app-base AS production-app
 
-ENV APP_PATH /app
-WORKDIR $APP_PATH
-ADD Gemfile $APP_PATH
-ADD Gemfile.lock $APP_PATH
-COPY package.json yarn.lock $APP_PATH/
+# Add some basic utils for local development
+FROM app-base AS development-app
+RUN apt-get install -y \
+  grep \
+  iputils-ping \
+  less \
+  procps \
+  telnet \
+  vim \
+  nano
 
-RUN bundle install --jobs `expr $(cat /proc/cpuinfo | grep -c "cpu cores") - 1`
-RUN yarn
+# Dynamically build dependencies into the app image
+FROM ${BUILD_ENV}-app AS app-source
 
-COPY . $APP_PATH/
+# Build the Ruby dependencies
+FROM base AS base-build
+ENV BUNDLER_VERSION 2.2.24
+COPY Gemfile Gemfile.lock ./
+RUN gem update --system \
+  && gem install bundler -v $BUNDLER_VERSION
 
-RUN rake assets:precompile RAILS_ENV=production
-RUN rm -rf node_modules
+# All gem groups for local dev and testing
+FROM base-build AS development-build
+RUN bundle install --jobs `expr $(cat /proc/cpuinfo | grep -c "cpu cores") - 1` --retry 5
 
-CMD ["bundle", "exec", "rails", "server", "-p", "3000", "-b", "0.0.0.0"]
+FROM base-build AS production-build
+RUN bundle config set --local without 'development test' \
+  && bundle install --jobs `expr $(cat /proc/cpuinfo | grep -c "cpu cores") - 1` --retry 5
+
+# The COPY --from cannot use a variable, so we set up this stage to
+# handle that dynamically so we can use this with docker compose
+FROM ${BUILD_ENV}-build AS build-source
+
+FROM app-source AS app
+RUN apt-get update \
+  && apt-get install -y \
+    ghostscript \
+    imagemagick \
+    libpq-dev \
+    patch \
+    file
+COPY --from=build-source /usr/local/bundle/ /usr/local/bundle/
+RUN groupadd -r app \
+  && useradd -r -m -g app app
+USER app
+WORKDIR /app
+COPY --chown=app . /app
