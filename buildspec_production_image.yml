@@ -4,15 +4,18 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/u7h4b1t2
+      - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin $CONTAINER_REPOSITORY_URL
+      - docker pull "${CONTAINER_REPOSITORY_URL}/${IMAGE_TAG}:cache"
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build -t test/rails-1:latest .
-      - docker tag test/rails-1:latest public.ecr.aws/u7h4b1t2/test/rails-1:latest
+      - docker build --cache-from "${CONTAINER_REPOSITORY_URL}/${IMAGE_TAG}:cache" -t $IMAGE_TAG:$CODEBUILD_SOURCE_VERSION --build-arg BUILDKIT_INLINE_CACHE=1 .
+      - docker tag $IMAGE_TAG:$CODEBUILD_SOURCE_VERSION "${IMAGE_TAG}:cache"
+      - docker tag $IMAGE_TAG:$CODEBUILD_SOURCE_VERSION $CONTAINER_REPOSITORY_URL/$IMAGE_TAG:$CODEBUILD_SOURCE_VERSION
+      - docker tag $IMAGE_TAG:cache "${CONTAINER_REPOSITORY_URL}/${IMAGE_TAG}:cache"
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push public.ecr.aws/u7h4b1t2/test/rails-1:latest
+      - docker push $CONTAINER_REPOSITORY_URL/$IMAGE_TAG

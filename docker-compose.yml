@@ -5,6 +5,8 @@ x-base: &base
     context: .
     args:
       BUILD_ENV: development
+    cache_from:
+      - alpine:latest
   environment:
     DB_HOST: db
     DB_PASSWORD: password
@@ -25,6 +27,7 @@ services:
     container_name: rails_1_test
     volumes:
       - ./tmp/reports:/tmp/reports
+      - ./tmp/docker_bundle:/usr/local/bundle
 
   db:
     image: postgres:12.5

@@ -1,12 +1,22 @@
 version: 0.2
 
 phases:
+#  pre_build:
+#    commands:
+#      - echo Logging in to Amazon ECR...
+#      - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin $CONTAINER_REPOSITORY_URL
+#      - docker pull $CONTAINER_REPOSITORY_URL/$IMAGE_TAG:$CODEBUILD_SOURCE_VERSION || true
   build:
     commands:
       - echo RSpec started on `date`
       - mkdir -p tmp/reports
       - chmod 777 tmp/reports
       - docker-compose run app
+#  post_build:
+#    commands:
+#      - echo Build completed on `date`
+#      - echo Pushing the Docker image...
+#      - docker push $CONTAINER_REPOSITORY_URL/$IMAGE_TAG
 
 reports:
   rspec_reports:
@@ -14,3 +24,7 @@ reports:
       - rspec.xml
     base-directory: tmp/reports
     file-format: JUNITXML
+
+#cache:
+#  paths:
+#    - 'vendor/bundle/**/*'
