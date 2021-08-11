@@ -70,3 +70,4 @@ yarn-debug.log*
 /public/uploads
 
 .idea
+/buildspec*.yml

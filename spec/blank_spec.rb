@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-describe "rspec" do
-  it "should pass" do
-    expect(1).to eq(2)
+describe 'rspec' do
+  it 'should pass' do
+    expect(2).to eq(2)
   end
 end

@@ -1,21 +1,20 @@
 version: 0.2
+run-as: root
 
 phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin $CONTAINER_REPOSITORY_URL
-      - docker pull "${CONTAINER_REPOSITORY_URL}/${IMAGE_TAG}:cache"
+      - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin $REPOSITORY_URL
+      - FULL_REPOSITORY_URL=$REPOSITORY_URL/$IMAGE_NAME
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build --cache-from "${CONTAINER_REPOSITORY_URL}/${IMAGE_TAG}:cache" -t $IMAGE_TAG:$CODEBUILD_SOURCE_VERSION --build-arg BUILDKIT_INLINE_CACHE=1 .
-      - docker tag $IMAGE_TAG:$CODEBUILD_SOURCE_VERSION "${IMAGE_TAG}:cache"
-      - docker tag $IMAGE_TAG:$CODEBUILD_SOURCE_VERSION $CONTAINER_REPOSITORY_URL/$IMAGE_TAG:$CODEBUILD_SOURCE_VERSION
-      - docker tag $IMAGE_TAG:cache "${CONTAINER_REPOSITORY_URL}/${IMAGE_TAG}:cache"
+      - DOCKER_BUILDKIT=1 docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $FULL_REPOSITORY_URL:$IMAGE_TAG -t $IMAGE_NAME:$IMAGE_TAG .
+      - docker tag $IMAGE_NAME:$IMAGE_TAG $REPOSITORY_URL/$IMAGE_NAME:$IMAGE_TAG
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push $CONTAINER_REPOSITORY_URL/$IMAGE_TAG
+      - docker push $REPOSITORY_URL/$IMAGE_NAME:$IMAGE_TAG
