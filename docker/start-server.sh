@@ -1,5 +1,10 @@
 #! /bin/sh
 
-bundle exec rake db:migrate 2>/dev/null || bundle exec rake db:setup
+echo "DB migration: started"
+rake db:migrate
+echo "DB migration: done"
+
+echo "CMD:"
+echo "$@"
 
 exec "$@"
