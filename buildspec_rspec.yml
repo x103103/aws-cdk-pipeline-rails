@@ -1,11 +1,11 @@
 version: 0.2
 
 phases:
-#  pre_build:
-#    commands:
-#      - echo Logging in to Amazon ECR...
-#      - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin $CONTAINER_REPOSITORY_URL
-#      - docker pull $CONTAINER_REPOSITORY_URL/$IMAGE_TAG:$CODEBUILD_SOURCE_VERSION || true
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin $CONTAINER_REPOSITORY_URL
+      - docker pull $CONTAINER_REPOSITORY_URL/$IMAGE_TAG:$CODEBUILD_SOURCE_VERSION || true
   build:
     commands:
       - echo RSpec started on `date`

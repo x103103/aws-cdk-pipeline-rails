@@ -5,8 +5,8 @@ x-base: &base
     context: .
     args:
       BUILD_ENV: development
-    cache_from:
-      - alpine:latest
+#    cache_from:
+#      - test/rails-1:latest
   environment:
     DB_HOST: db
     DB_PASSWORD: password
@@ -22,12 +22,11 @@ services:
     <<: *base
     ports:
       - "3000:3000"
-    command: 'bundle exec rspec --format RspecJunitFormatter --out /tmp/reports/rspec.xml'
+    command: ["rspec", "--format", "RspecJunitFormatter", "--out", "/tmp/reports/rspec.xml"]
     entrypoint: ./docker/start-test.sh
     container_name: rails_1_test
     volumes:
       - ./tmp/reports:/tmp/reports
-      - ./tmp/docker_bundle:/usr/local/bundle
 
   db:
     image: postgres:12.5

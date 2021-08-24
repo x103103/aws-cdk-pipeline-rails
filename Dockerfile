@@ -61,3 +61,6 @@ RUN groupadd -r app \
 USER app
 WORKDIR /app
 COPY --chown=app . /app
+
+ENTRYPOINT ./docker/start-server.sh
+CMD ["rails", "s"]
