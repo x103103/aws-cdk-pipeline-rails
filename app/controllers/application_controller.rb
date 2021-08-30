@@ -2,6 +2,6 @@
 
 class ApplicationController < ActionController::Base
   def root
-    render json: { status: 'OK 3' }
+    render json: { status: 'OK 4' }
   end
 end

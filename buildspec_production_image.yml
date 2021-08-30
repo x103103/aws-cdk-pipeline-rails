@@ -5,19 +5,19 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin $REPOSITORY_URL
-      - FULL_REPOSITORY_URL=$REPOSITORY_URL/$IMAGE_NAME
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - DOCKER_BUILDKIT=1 docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $FULL_REPOSITORY_URL:$IMAGE_TAG -t $IMAGE_NAME:$IMAGE_TAG .
-      - docker tag $IMAGE_NAME:$IMAGE_TAG $REPOSITORY_URL/$IMAGE_NAME:$IMAGE_TAG
+      - DOCKER_BUILDKIT=1 docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $REPOSITORY_URL:latest -t $REPOSITORY_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION .
+      - docker tag $REPOSITORY_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION $REPOSITORY_URL:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker tag $REPOSITORY_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION $REPOSITORY_URL:latest
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push $REPOSITORY_URL/$IMAGE_NAME:$IMAGE_TAG
-      - printf '[{"name":"rails-1-web","imageUri":"%s"}]' $FULL_REPOSITORY_URL:$IMAGE_TAG > imagedefinitions.json
+      - docker push $REPOSITORY_URL
+      - printf '[{"name":"cdk-rails-1-web","imageUri":"%s"}]' $REPOSITORY_URL:$CODEBUILD_RESOLVED_SOURCE_VERSION > imagedefinitions.json
 artifacts:
   files: imagedefinitions.json
